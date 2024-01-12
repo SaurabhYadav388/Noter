@@ -36,3 +36,6 @@ RESOURCES += \
 
 DISTFILES += \
     README.md
+
+
+win32:RC_ICONS +=myappicon.ico

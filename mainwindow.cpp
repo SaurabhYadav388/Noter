@@ -11,18 +11,8 @@
 
 
 SimpleSpellChecker::SimpleSpellChecker()
-{/*
-    // Populate the dictionary with some example words
-    dictionary << "hello" << "world" << "spell" << "checker" << "example";
-    // if(triePtr==nullptr)
-    //     qDebug() << "ptr null";
+{
 
-    //triePtr= new Trie();
-
-    triePtr->insert("hello");
-    triePtr->insert("world");
-    triePtr->insert("spell");
-    triePtr->insert("checker");*/
 }
 
 bool SimpleSpellChecker::isSpelledCorrectly(const QString &word) const
@@ -197,7 +187,8 @@ void MainWindow::on_actionSave_triggered()
 
 void MainWindow::on_actionSave_As_triggered()
 {
-    QString file_name=QFileDialog::getOpenFileName(this,"File Save As");
+    QString file_name=QFileDialog::getSaveFileName(this,"File Save As");
+
     QFile file(file_name);
     if(!file.open(QFile::WriteOnly | QFile::Text))
     {
