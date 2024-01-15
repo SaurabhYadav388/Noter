@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QFile>
 #include <QFileDialog>
+#include <QFileInfo>
 #include <QTextStream>
 #include <QMessageBox>
 #include <QComboBox>
@@ -153,7 +154,10 @@ void MainWindow::on_actionOpen_triggered()
 
     file_path=file_name;//to store the opened file name
 
-    setWindowTitle(file_name);
+    QFileInfo fileInfo(file_name);
+    QString winTitleName = fileInfo.fileName();
+
+    setWindowTitle(winTitleName);
 
     QTextStream in(&file);
     QString text= in.readAll();
@@ -198,7 +202,9 @@ void MainWindow::on_actionSave_As_triggered()
 
     file_path=file_name;
 
-    setWindowTitle(file_name);
+    QFileInfo fileInfo(file_name);
+    QString winTitleName = fileInfo.fileName();
+    setWindowTitle(winTitleName);
 
     QTextStream out(&file);
     QString text= ui->textEdit->toPlainText();
