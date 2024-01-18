@@ -8,6 +8,7 @@
 #include <QComboBox>
 #include <QFont>
 #include <QFontDialog>
+#include <QSettings>
 
 
 
@@ -29,7 +30,7 @@ bool SimpleSpellChecker::isSpelledCorrectly(const QString &word) const
 
 //constructor of RTSC
 RealTimeSpellChecker::RealTimeSpellChecker(QTextEdit *textEdit, SimpleSpellChecker *spellChecker)
-    : QObject(textEdit), RTtextEdit(textEdit), spellChecker(spellChecker)
+    : QObject(textEdit), RTtextEdit(textEdit), RTspellChecker(spellChecker)
 {
     connect(RTtextEdit, &QTextEdit::textChanged, this, &RealTimeSpellChecker::checkSpellingRealTime);
 }
@@ -69,7 +70,7 @@ void RealTimeSpellChecker::checkSpellingRealTime()
             format.setForeground(Qt::red); // Set font color to red (or any other color)
             //format.setFontWeight(QFont::Bold); // Set font weight to bold (optional)
 
-            if (spellChecker->isSpelledCorrectly(word))
+            if (RTspellChecker->isSpelledCorrectly(word))
             {
                 qDebug() << "Correctly spelled word:" << word;
                 //default format
@@ -101,17 +102,14 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowTitle("Untitled");
 
 
-    // Set default font style and family
-    QFont defaultFont("Arial", 12);  // Set your desired default font family and size
-
-    // Set default font for text editor
-    ui->textEdit->setFont(defaultFont);
+    // Set default font for text editor from saved setting or hardcoded defaultInitialfont in main class
+    loadFontSettings();
 
 
-    // Create the spell checker
+    // Create the spell checker (and assign to global var)
     spellChecker = new SimpleSpellChecker();
 
-    // Create the real-time spell checker and connect it to the text edit
+    // Create the real-time spell checker(and assign to global var) and connect it to the text edit
     realTimeSpellChecker = new RealTimeSpellChecker(ui->textEdit, spellChecker);
 
 }
@@ -241,4 +239,27 @@ void MainWindow::on_actionRedo_triggered()
 void MainWindow::on_actionUndo_triggered()
 {
     ui->textEdit->undo();
+}
+
+void MainWindow::on_actionChange_Font_triggered()
+{
+    bool ok;
+
+    QFont newFont = QFontDialog::getFont(&ok, defaultInitialFont/* initial font*/, this);
+    if (ok) {
+        ui->textEdit->setFont(newFont);
+        saveFontSettings(newFont);  // Save user preferences when the font is changed
+    }
+}
+void MainWindow::saveFontSettings(QFont &newFont)
+{
+    QSettings settings("MyOrg", "Noter");
+    settings.setValue("font", newFont);
+}
+void MainWindow::loadFontSettings()
+{
+    QSettings settings("MyOrg", "Noter");
+    QFont savedFont = settings.value("font", defaultInitialFont).value<QFont>();
+    //Change/Set ui textfont
+    ui->textEdit->setFont(savedFont);
 }

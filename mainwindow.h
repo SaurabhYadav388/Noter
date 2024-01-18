@@ -8,6 +8,8 @@
 #include <QTextCursor>
 #include <QTextCharFormat>
 
+#include <QFont>
+
 #include "trie.h"//
 
 QT_BEGIN_NAMESPACE
@@ -44,7 +46,7 @@ class RealTimeSpellChecker : public QObject
 
     private:
         QTextEdit *RTtextEdit;
-        SimpleSpellChecker *spellChecker;
+        SimpleSpellChecker *RTspellChecker;
 };
 
 
@@ -80,11 +82,17 @@ class MainWindow : public QMainWindow
         void onTextChanged();//////
 
 
+        void on_actionChange_Font_triggered();
+        void saveFontSettings(QFont &newFont);
+        void loadFontSettings();
+
     private:
         Ui::MainWindow *ui;
         QString file_path;
 
-        QTextEdit *mytextEdit;
+        QFont defaultInitialFont=QFont("Arial", 12);
+
+        QTextEdit *mytextEdit;//not used anywhere...?
         SimpleSpellChecker *spellChecker;
         RealTimeSpellChecker *realTimeSpellChecker;//////these pointer will be used an given memory in main function;
         ////and passed as parameter to other classs constructor to get used
