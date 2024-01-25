@@ -101,9 +101,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     setWindowTitle("Untitled");
 
-
+    ui->actionDark_Theme->setCheckable(true);
+    loadThemeSettings();
     // Set default font for text editor from saved setting or hardcoded defaultInitialfont in main class
     loadFontSettings();
+
 
 
     // Create the spell checker (and assign to global var)
@@ -244,12 +246,16 @@ void MainWindow::on_actionUndo_triggered()
 void MainWindow::on_actionChange_Font_triggered()
 {
     bool ok;
+    QSettings settings("MyOrg", "Noter");
+    QFont prevFont= settings.value("font", defaultInitialFont).value<QFont>();    //if no font setting(very first) use defaultinitialfont=arial12:
+    //above for highlighting current font in font option dialog.
 
-    QFont newFont = QFontDialog::getFont(&ok, defaultInitialFont/* initial font*/, this);
+    QFont newFont = QFontDialog::getFont(&ok, prevFont/* initial font*/, this);
     if (ok) {
         ui->textEdit->setFont(newFont);
         saveFontSettings(newFont);  // Save user preferences when the font is changed
     }
+
 }
 void MainWindow::saveFontSettings(QFont &newFont)
 {
@@ -259,7 +265,36 @@ void MainWindow::saveFontSettings(QFont &newFont)
 void MainWindow::loadFontSettings()
 {
     QSettings settings("MyOrg", "Noter");
-    QFont savedFont = settings.value("font", defaultInitialFont).value<QFont>();
+    QFont savedFont = settings.value("font", defaultInitialFont).value<QFont>();    //if no font setting(very first) use defaultinitialfont=arial12:
     //Change/Set ui textfont
     ui->textEdit->setFont(savedFont);
 }
+
+void MainWindow::on_actionDark_Theme_triggered()
+{
+    bool darkThemeEnabled=ui->actionDark_Theme->isChecked();
+
+    // Load the appropriate QSS file
+    QFile file(darkThemeEnabled ? ":themes/darkTheme.qss" : ":themes/lightTheme.qss");
+    file.open(QFile::ReadOnly | QFile::Text);
+    QString styleSheet = QLatin1String(file.readAll());
+    qApp->setStyleSheet(styleSheet);
+
+    QSettings settings("MyOrg", "Noter");
+    settings.setValue("darkThemeEnabled", darkThemeEnabled);
+}
+
+void MainWindow::loadThemeSettings(){
+    QSettings settings("MyOrg", "Noter");
+    bool darkThemeEnabled = settings.value("darkThemeEnabled", false).toBool();
+    if(darkThemeEnabled)
+        ui->actionDark_Theme->setChecked(true);
+
+    // Load the appropriate QSS file
+    QFile file(darkThemeEnabled ? ":themes/darkTheme.qss" : ":themes/lightTheme.qss");
+    file.open(QFile::ReadOnly | QFile::Text);
+    QString styleSheet = QLatin1String(file.readAll());
+    qApp->setStyleSheet(styleSheet);
+
+}
+

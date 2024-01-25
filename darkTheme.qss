@@ -1,0 +1,47 @@
+/* Overall window settings */
+QMainWindow {
+    background-color: #222;
+    border: 1px solid #333;
+    color: #eee;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+}
+
+/* Text editor styles */
+QTextEdit {
+    background-color: #333;
+    border: none;
+    padding: 10px;
+    color: #fff;
+}
+
+/* Menu bar styles */
+QMenuBar {
+    background-color: #444;
+    border: 1px solid #333;
+}
+
+QMenuBar::item {
+    padding: 5px 10px;
+    color: #ddd;
+}
+
+QMenuBar::item:selected {
+    background-color: #333;
+}
+
+/* Tool bar styles */
+QToolBar {
+    background-color: #444;
+    border: 1px solid #333;
+}
+
+QToolButton {
+    padding: 5px;
+    color: #ddd;
+}
+QToolBar::separator {
+    background-color:  #808080;
+    width: 1px;
+    margin: 5px 2px;
+}

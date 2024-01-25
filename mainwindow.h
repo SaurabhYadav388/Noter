@@ -86,6 +86,9 @@ class MainWindow : public QMainWindow
         void saveFontSettings(QFont &newFont);
         void loadFontSettings();
 
+        void on_actionDark_Theme_triggered();
+        void loadThemeSettings();
+
     private:
         Ui::MainWindow *ui;
         QString file_path;

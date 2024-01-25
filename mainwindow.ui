@@ -60,14 +60,7 @@
     <property name="title">
      <string>View</string>
     </property>
-    <widget class="QMenu" name="menuTheme">
-     <property name="title">
-      <string>Theme</string>
-     </property>
-     <addaction name="actionLight"/>
-     <addaction name="actionDark"/>
-    </widget>
-    <addaction name="menuTheme"/>
+    <addaction name="actionDark_Theme"/>
     <addaction name="actionChange_Font"/>
    </widget>
    <addaction name="menuFile"/>
@@ -102,8 +95,8 @@
    <addaction name="separator"/>
    <addaction name="actionUndo"/>
    <addaction name="separator"/>
-   <addaction name="separator"/>
    <addaction name="actionRedo"/>
+   <addaction name="separator"/>
   </widget>
   <action name="actionNew">
    <property name="icon">
@@ -189,19 +182,14 @@
     <string>Open</string>
    </property>
   </action>
-  <action name="actionLight">
-   <property name="text">
-    <string>Light</string>
-   </property>
-  </action>
-  <action name="actionDark">
-   <property name="text">
-    <string>Dark</string>
-   </property>
-  </action>
   <action name="actionChange_Font">
    <property name="text">
     <string>Change Font</string>
+   </property>
+  </action>
+  <action name="actionDark_Theme">
+   <property name="text">
+    <string>Dark Theme</string>
    </property>
   </action>
  </widget>

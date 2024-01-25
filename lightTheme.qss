@@ -1,0 +1,119 @@
+/* Overall window settings */
+QMainWindow {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+}
+
+/* Text editor styles */
+QTextEdit {
+    background-color: #fff;
+    border: none;
+    padding: 10px;
+    color: #333;
+}
+
+/* Menu bar styles */
+QMenuBar {
+    background-color: #eee;
+    border: 1px solid #ddd;
+}
+
+QMenuBar::item {
+    padding: 5px 10px;
+    color: #333;
+}
+
+QMenuBar::item:selected {
+    background-color: #ddd;
+}
+
+/* Tool bar styles */
+QToolBar {
+    background-color: #eee;
+    border: 1px solid #ddd;
+}
+
+QToolButton {
+    padding: 5px;
+    color: #333;
+}
+
+QToolButton:hover {
+    background-color: #ddd;
+}
+
+/* Status bar styles */
+QStatusBar {
+    background-color: #eee;
+    border: 1px solid #ddd;
+}
+
+/* Scrollbar styles */
+QScrollBar:vertical {
+    width: 15px;
+    background-color: #eee;
+}
+
+QScrollBar::handle:vertical {
+    background-color: #ddd;
+    min-height: 20px;
+}
+
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
+    border: none;
+    width: 10px;
+    height: 10px;
+    background-color: transparent;
+    image: url(:/icons/up_arrow.png) url(:/icons/down_arrow.png);
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    background-color: transparent;
+}
+
+/* Line number styles */
+QLineNumberWidget {
+    background-color: #eee;
+    border-right: 1px solid #ddd;
+    padding: 5px;
+    color: #999;
+}
+
+/* Search bar styles */
+QLineEdit {
+    background-color: #ddd;
+    border: 1px solid #ccc;
+    padding: 5px;
+    color: #333;
+}
+
+/* Find/Replace window styles */
+QDialog {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+QDialog QPushButton {
+    background-color: #eee;
+    border: 1px solid #ddd;
+    padding: 5px 10px;
+    color: #333;
+}
+
+QDialog QPushButton:hover {
+    background-color: #ddd;
+}
+
+/* Text selection styles */
+QTextEdit::selected {
+    background-color: #f0f0f0;
+}
+
+/* Syntax highlighting (optional) */
+/* ... insert your specific syntax highlighting styles here ... */
+
+/* Other widget styles (optional) */
+/* ... add styles for other widgets you use in your project ... */

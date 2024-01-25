@@ -12,14 +12,6 @@ Trie* TrieManager::getTrieInstance(){
     if(!instance){
         instance = new Trie();
         qDebug()<<"new instance first time";
-
-        //initializing words
-        /*
-        instance->insert("hello");
-        instance->insert("world");
-        instance->insert("spell");
-        instance->insert("checker");*/
-
         QStringList words;
         QFile file(":/words.txt");
 
@@ -31,8 +23,7 @@ Trie* TrieManager::getTrieInstance(){
                 //qDebug()<<words[words.size()-1];//check
             }
             file.close();
-            qDebug()<<words.size();
-            for(int i=0;i<2000;i++)
+            for(int i=0;i<words.size();i++)
             {
                 instance->insert( words[i].toLower() );
             }
