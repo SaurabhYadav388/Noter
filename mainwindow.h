@@ -1,53 +1,16 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+
 #include <QMainWindow>
-#include <QComboBox>
-//
-#include <QTextEdit>
-#include <QTextCursor>
-#include <QTextCharFormat>
 
-#include <QFont>
-
-#include "trie.h"//
+#include "spellchecker.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
 }
 QT_END_NAMESPACE
-
-///
-class SimpleSpellChecker
-{
-    public:
-        SimpleSpellChecker();
-
-        bool isSpelledCorrectly(const QString &word) const;
-
-    private:
-        QSet<QString> dictionary;
-
-        Trie *triePtr=TrieManager::getTrieInstance();
-
-};
-///
-class RealTimeSpellChecker : public QObject
-{
-    Q_OBJECT
-
-    public:
-        RealTimeSpellChecker(QTextEdit *textEdit, SimpleSpellChecker *spellChecker);
-
-    public slots:
-        void checkSpellingRealTime();
-
-
-    private:
-        QTextEdit *RTtextEdit;
-        SimpleSpellChecker *RTspellChecker;
-};
 
 
 class MainWindow : public QMainWindow
@@ -78,9 +41,7 @@ class MainWindow : public QMainWindow
 
         void on_actionUndo_triggered();
 
-
         void onTextChanged();//////
-
 
         void on_actionChange_Font_triggered();
         void saveFontSettings(QFont &newFont);
@@ -95,9 +56,7 @@ class MainWindow : public QMainWindow
 
         QFont defaultInitialFont=QFont("Arial", 12);
 
-        QTextEdit *mytextEdit;//not used anywhere...?
-        SimpleSpellChecker *spellChecker;
-        RealTimeSpellChecker *realTimeSpellChecker;//////these pointer will be used an given memory in main function;
+        SpellChecker *spellChecker;//////these pointer will be used an given memory in main function;
         ////and passed as parameter to other classs constructor to get used
 };
 #endif // MAINWINDOW_H

@@ -11,10 +11,12 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    spellchecker.cpp \
     trie.cpp
 
 HEADERS += \
     mainwindow.h \
+    spellchecker.h \
     trie.h
 
 FORMS += \
