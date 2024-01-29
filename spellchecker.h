@@ -3,15 +3,7 @@
 
 #include "trie.h"
 #include <QObject>
-#include <QFile>
-#include <QFileDialog>
-#include <QFileInfo>
 #include <QTextEdit>
-#include <QMessageBox>
-#include <QComboBox>
-#include <QFont>
-#include <QFontDialog>
-#include <QSettings>
 
 class SpellChecker : public QObject
 {

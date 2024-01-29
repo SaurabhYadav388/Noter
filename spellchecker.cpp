@@ -1,6 +1,5 @@
 #include "spellchecker.h"
 
-
 //constructor of SpC
 SpellChecker::SpellChecker(QTextEdit *textEdit)
     : QObject(textEdit), scTextEdit(textEdit)
@@ -11,13 +10,12 @@ SpellChecker::SpellChecker(QTextEdit *textEdit)
 
 bool SpellChecker::isSpelledCorrectly(const QString &word) const
 {
-    qDebug() << "inside spellcorrect;? message";
     // Convert the word to lowercase for case-insensitive comparison
     QString lowercaseWord = word.toLower();
 
     // Check if the lowercase word is in the dictionary
     //return dictionary.contains(lowercaseWord);
-    return triePtr->search(lowercaseWord);              /////error possibility
+    return triePtr->search(lowercaseWord);
 }
 
 
@@ -41,7 +39,6 @@ void SpellChecker::checkSpellingRealTime()
             // Continue moving left until non-word character is reached
             QString txt=cursor.selectedText();
             if(txt[0]==' '){
-                qDebug()<<"ha;";
                 cursor.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, 1); // Adjust for overshoot
                 break;
             }
@@ -49,8 +46,6 @@ void SpellChecker::checkSpellingRealTime()
         }
 
         word = cursor.selectedText().trimmed();//for last space
-
-        qDebug() << "Word before space: " << word;
 
         QTextCharFormat format;
         format.setForeground(Qt::red); // Set font color to red (or any other color)

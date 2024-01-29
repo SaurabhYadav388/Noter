@@ -3,13 +3,13 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QFileInfo>
-#include <QTextStream>
 #include <QMessageBox>
-#include <QComboBox>
 #include <QFont>
 #include <QFontDialog>
 #include <QSettings>
+#include <QThread>
 #include "spellChecker.h"
+#include "trie.h"
 
 
 
@@ -20,23 +20,40 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     //this->setCentralWidget(ui->textEdit);
 
+    spellChecker=nullptr;//init so can delete easily
+    trieManager=new TrieManager();///
+    trieInitializeThread=new QThread();///
+
     setWindowTitle("Untitled");
 
     ui->actionDark_Theme->setCheckable(true);
-    loadThemeSettings();
-    // Set default font for text editor from saved setting or hardcoded defaultInitialfont in main class
+
+    //load the Font before Theme(qss),opposite cause irregular fonts.
     loadFontSettings();
+    loadThemeSettings();
 
 
-    // Create the real-time spell checker(and assign to global var) and connect it to the text edit
-    spellChecker = new SpellChecker(ui->textEdit);
 
+
+    trieManager->moveToThread(trieInitializeThread);
+    QObject::connect(trieInitializeThread,&QThread::started,trieManager,&TrieManager::trieInitialize);
+    QObject::connect(trieManager,&TrieManager::trieInitializeCompleteSignal,this,&MainWindow::onTrieInitializeComplete);
+    QObject::connect(trieManager,&TrieManager::trieInitializeCompleteSignal, trieInitializeThread, &QThread::quit);
+    //deleting thread here,so no need to delete in destructor
+    QObject::connect(trieInitializeThread,&QThread::finished,trieInitializeThread,&QObject::deleteLater);
+    trieInitializeThread->start();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete spellChecker;/////////
+    if(spellChecker!=nullptr)
+    {
+        qDebug()<<"Spellcheck not nullptr, deleting...";
+        delete spellChecker;
+    }
+    delete trieManager;
+    //delete trieInitializeThread;////no need to delete,auto delete using connect() in constr. ,deleteing here :seg fault
 }
 
 void MainWindow::onTextChanged()
@@ -48,7 +65,7 @@ void MainWindow::onTextChanged()
 
 void MainWindow::on_actionNew_triggered()
 {
-    MainWindow *newWindow = new MainWindow;
+    MainWindow *newWindow = new MainWindow();
     // Ensure the new window is deleted when closed
     newWindow->setAttribute(Qt::WA_DeleteOnClose);
     newWindow->show();
@@ -209,6 +226,14 @@ void MainWindow::loadThemeSettings(){
     file.open(QFile::ReadOnly | QFile::Text);
     QString styleSheet = QLatin1String(file.readAll());
     qApp->setStyleSheet(styleSheet);
+
+}
+
+void MainWindow::onTrieInitializeComplete()
+{
+    qDebug()<<"ontrieInit complete function";
+    //initialize spell check only if trieinit complete
+    spellChecker = new SpellChecker(ui->textEdit);////////////////////////////////////////////////////////
 
 }
 

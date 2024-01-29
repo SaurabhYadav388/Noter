@@ -4,6 +4,7 @@
 #include <QLocale>
 #include <QTranslator>
 #include <QFile>
+#include <QThread>
 
 int main(int argc, char *argv[])
 {
@@ -26,6 +27,9 @@ int main(int argc, char *argv[])
     // a.setStyleSheet(styleSheet);
 
     MainWindow w;
+
     w.show();
+
     return a.exec();
+
 }

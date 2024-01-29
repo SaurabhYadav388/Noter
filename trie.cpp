@@ -39,12 +39,31 @@ bool Trie::search(const QString& word) {
 }
 
 
+TrieManager::TrieManager()
+{
+
+}
+
+Trie* TrieManager::myinstance = nullptr;//initialize here
+
 Trie* TrieManager::getTrieInstance(){
-    static Trie* instance=nullptr; // Create the instance on first access
-    //declare here because have to use constexpr to allow assign nullptr in class,but later cant reassign new Node
-    if(!instance){
-        instance = new Trie();
-        qDebug()<<"new instance first time";
+    qDebug()<<"inside get instance";
+    return myinstance;
+}
+
+void TrieManager::setTrieInstance(Trie *_myInst)
+{
+    myinstance=_myInst;
+}
+
+
+void TrieManager::trieInitialize()
+{
+    if(TrieManager::myinstance==nullptr)
+    {
+        setTrieInstance(new Trie());//assigning instance mem.
+
+        qDebug()<<"new instance initialization first time";
         QStringList words;
         QFile file(":/words.txt");
 
@@ -58,15 +77,19 @@ Trie* TrieManager::getTrieInstance(){
             file.close();
             for(int i=0;i<words.size();i++)
             {
-                instance->insert( words[i].toLower() );
+                myinstance->insert( words[i].toLower() );
             }
-        } else {
-            qWarning() << "Error opening file";
         }
-
+        else
+        {
+            qWarning() << "Error opening file";
+            return;
+        }
     }
-    qDebug()<<"inside get instance";
-
-    return instance;
+    else
+    {
+        qDebug()<<"Already initialized trie";
+    }
+    emit trieInitializeCompleteSignal(); ////emit signal that trie initialization is complete
 }
 

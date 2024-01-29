@@ -5,6 +5,8 @@
 #include <QMainWindow>
 
 #include "spellchecker.h"
+#include <QThread>
+#include "trie.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -24,24 +26,16 @@ class MainWindow : public QMainWindow
 
     private slots:
         void on_actionNew_triggered();
-
         void on_actionCut_triggered();
-
         void on_actionOpen_triggered();
-
         void on_actionSave_triggered();
-
         void on_actionSave_As_triggered();
-
         void on_actionCopy_triggered();
-
         void on_actionPaste_triggered();
-
         void on_actionRedo_triggered();
-
         void on_actionUndo_triggered();
 
-        void onTextChanged();//////
+        void onTextChanged();
 
         void on_actionChange_Font_triggered();
         void saveFontSettings(QFont &newFont);
@@ -50,13 +44,19 @@ class MainWindow : public QMainWindow
         void on_actionDark_Theme_triggered();
         void loadThemeSettings();
 
+    public slots:
+        void onTrieInitializeComplete();
+
     private:
         Ui::MainWindow *ui;
         QString file_path;
-
         QFont defaultInitialFont=QFont("Arial", 12);
 
-        SpellChecker *spellChecker;//////these pointer will be used an given memory in main function;
-        ////and passed as parameter to other classs constructor to get used
+        //use pointers instead of simple stack instance( internally Qt's parent-child
+        //ownership hierarchy of QObjects, compiler tries to free even if stack mem popped )
+        SpellChecker *spellChecker;
+
+        TrieManager *trieManager;
+        QThread *trieInitializeThread;
 };
 #endif // MAINWINDOW_H

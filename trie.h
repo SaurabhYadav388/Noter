@@ -2,12 +2,14 @@
 #define TRIE_H
 
 #include <QString>
+#include <QObject>
 
 class TrieNode{
 public:
     TrieNode *children[26];//default nullptr
     bool isend;//default false
 };
+
 class Trie {
 private:
     TrieNode* root;
@@ -18,12 +20,22 @@ public:
     bool search(const QString& word);
 };
 
-class TrieManager {
-public:
+class TrieManager : public QObject
+{
 
-    static Trie* getTrieInstance();
+    Q_OBJECT
+
 private:
-    TrieManager(); // Private constructor to prevent direct instantiation
+    static Trie* myinstance;
+
+public:
+    static Trie* getTrieInstance();
+    static void setTrieInstance(Trie *_myInst);
+    void trieInitialize();
+    TrieManager();
+
+signals:
+    void trieInitializeCompleteSignal();
 };
 
 #endif // TRIE_H
