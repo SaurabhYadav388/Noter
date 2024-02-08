@@ -10,6 +10,8 @@ providing spell check and suggestion resulting a responsive user interface.
 
 ## Demo
 
+https://github.com/SaurabhYadav388/Noter/assets/128916471/c56d37e9-b4de-429e-aa9f-a707fc499a1e
+
 
 ## Features
 
