@@ -8,10 +8,9 @@
 #include <QFontDialog>
 #include <QSettings>
 #include <QThread>
+#include <QThreadPool>
 #include "spellChecker.h"
 #include "trie.h"
-
-
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -21,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent)
     //this->setCentralWidget(ui->textEdit);
 
     spellChecker=nullptr;//init so can delete easily
+    spellCheckerThread=new QThread();///not really needed
+
     trieManager=new TrieManager();///
     trieInitializeThread=new QThread();///
 
@@ -32,8 +33,9 @@ MainWindow::MainWindow(QWidget *parent)
     loadFontSettings();
     loadThemeSettings();
 
-
-
+    //QThreadPool::globalInstance()->setMaxThreadCount(8);
+    QThread::currentThread()->setObjectName("Main thread");
+    qDebug()<<"mainwindout"<<QThread::currentThread();
 
     trieManager->moveToThread(trieInitializeThread);
     QObject::connect(trieInitializeThread,&QThread::started,trieManager,&TrieManager::trieInitialize);

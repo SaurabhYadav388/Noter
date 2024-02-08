@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QStringList>
+#include <QThread>
 
 Trie::Trie() : root(new TrieNode()) {}
 
@@ -21,6 +22,8 @@ void Trie::insert(const QString& word) {
 
 bool Trie::search(const QString& word) {
     TrieNode* trav = root;
+    qDebug()<<"search trie:"<<QThread::currentThread();
+
     for (const QChar& ch : word) {
 
         char c=ch.toLatin1();
@@ -38,6 +41,11 @@ bool Trie::search(const QString& word) {
     return trav->isend;
 }
 
+const QStringList &Trie::getAllWordList() const
+{
+    return wordList;
+}
+
 
 TrieManager::TrieManager()
 {
@@ -51,33 +59,33 @@ Trie* TrieManager::getTrieInstance(){
     return myinstance;
 }
 
-void TrieManager::setTrieInstance(Trie *_myInst)
+void TrieManager::setTrieInstance(Trie *_myTrieInst)
 {
-    myinstance=_myInst;
+    myinstance=_myTrieInst;
 }
 
 
 void TrieManager::trieInitialize()
 {
+    qDebug()<<"trieinit"<<QThread::currentThread();
     if(TrieManager::myinstance==nullptr)
     {
         setTrieInstance(new Trie());//assigning instance mem.
 
         qDebug()<<"new instance initialization first time";
-        QStringList words;
+
         QFile file(":/words.txt");
 
         if (file.open(QIODevice::ReadOnly)) {
             QTextStream in(&file);
             while (!in.atEnd()) {
                 QString line = in.readLine();
-                words.append( line.split('\n') ); // Split into words
-                //qDebug()<<words[words.size()-1];//check
+                myinstance->wordList.append( line.split('\n') ); // Split into words
             }
             file.close();
-            for(int i=0;i<words.size();i++)
+            for(int i=0;i<myinstance->wordList.size();i++)
             {
-                myinstance->insert( words[i].toLower() );
+                myinstance->insert( myinstance->wordList[i].toLower() );
             }
         }
         else

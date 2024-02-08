@@ -55,6 +55,7 @@ class MainWindow : public QMainWindow
         //use pointers instead of simple stack instance( internally Qt's parent-child
         //ownership hierarchy of QObjects, compiler tries to free even if stack mem popped )
         SpellChecker *spellChecker;
+        QThread *spellCheckerThread;
 
         TrieManager *trieManager;
         QThread *trieInitializeThread;

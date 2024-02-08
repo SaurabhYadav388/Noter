@@ -12,14 +12,15 @@ class SpellChecker : public QObject
 public:
     SpellChecker(QTextEdit *textEdit);
 
-    bool isSpelledCorrectly(const QString &word) const;
-
 public slots:
     void checkSpellingRealTime();
+    void suggestSpelling(const QPoint& pos);
 
 private:
     QTextEdit *scTextEdit;
     Trie *triePtr = TrieManager::getTrieInstance();
+    bool isSpelledCorrectly(const QString &word) const;
+    QStringList getWordSuggestions(const QString &misSpeltWord,const QStringList &wordList);
 };
 
 #endif // SPELLCHECKER_H

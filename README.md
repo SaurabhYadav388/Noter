@@ -4,8 +4,12 @@ Noter is a simple notepad clone developed in C++ using the Qt framework. It prov
 
 Additionally, Noter incorporates a spell check feature implemented using a Trie data structure.
 
-The application utilizes QThread to separate the main thread from other tasks such as reading words and storing them in the trie, 
-providing a responsive user interface.
+The application utilizes QT threading api's to separate the main thread 
+from other tasks such as reading words and storing them in the trie,
+providing spell check and suggestion resulting a responsive user interface.
+
+## Demo
+
 
 ## Features
 
@@ -18,5 +22,5 @@ providing a responsive user interface.
 - **Spell Check:**
   - Utilizes Trie data structure for efficient spell checking.
 
-- **Threading:**
-  - QThread implementation for background tasks.
+- **Spell Suggestions:**
+  - Spell Suggestion using Levenshtein distance with QTconcurrent and Future for Threading.

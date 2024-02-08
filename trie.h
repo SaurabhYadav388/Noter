@@ -18,6 +18,9 @@ public:
     Trie();
     void insert(const QString& word);
     bool search(const QString& word);
+
+    QStringList wordList;
+    const QStringList& getAllWordList() const;
 };
 
 class TrieManager : public QObject
@@ -28,9 +31,10 @@ class TrieManager : public QObject
 private:
     static Trie* myinstance;
 
+
 public:
     static Trie* getTrieInstance();
-    static void setTrieInstance(Trie *_myInst);
+    static void setTrieInstance(Trie *_myTrieInst);
     void trieInitialize();
     TrieManager();
 
